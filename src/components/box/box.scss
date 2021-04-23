@@ -1,0 +1,23 @@
+@import '../../variables.scss';
+
+.box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  height: 600px;
+  background-color: $panel-body;
+  padding: 1.5rem;
+  border-radius: 5px;
+  border: 1px solid $black;
+
+  &-serial-number {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: $screen-text;
+    font-family: $font-medium;
+    font-weight: $text-bold;
+  }
+}

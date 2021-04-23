@@ -1,0 +1,31 @@
+@import '../../variables.scss';
+
+.box-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 145px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid $black;
+  border-radius: 5px;
+
+  h4 {
+    flex: 1 1 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: 2rem;
+  }
+
+  p {
+    flex: 0 0 auto;
+  }
+
+  h4, p {
+    color: $screen-text;
+  }
+
+}
+

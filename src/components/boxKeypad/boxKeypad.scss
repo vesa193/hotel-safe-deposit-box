@@ -1,0 +1,11 @@
+@import '../../variables.scss';
+
+.box {
+  &-keypad {
+    width: 90%;
+    height: 400px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+  }
+}

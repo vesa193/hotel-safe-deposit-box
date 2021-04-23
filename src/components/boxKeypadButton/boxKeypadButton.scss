@@ -1,0 +1,26 @@
+@import '../../variables.scss';
+
+.box {
+  &-keypad-button {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $button;
+    font-size: 3rem;
+    color: $button-text;
+    border: 1px solid $black;
+    border-radius: 5px;
+    box-shadow: 0px 3px 10px $box-shadow-color;
+    -webkit-box-shadow: 0px 3px 10px $box-shadow-color;
+    cursor: pointer;
+
+    &[aria-disabled='true'] {
+      pointer-events: none;
+    }
+    &[aria-disabled='false'] {
+      pointer-events: auto;
+    }
+  }
+}
