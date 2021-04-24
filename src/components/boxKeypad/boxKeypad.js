@@ -1,29 +1,67 @@
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BoxKeypadButton } from '../boxKeypadButton/boxKeypadButton';
 import { boxKeypadData } from './boxKeypadData';
 import './boxKeypad.scss';
-import { enteringNumbers, lockingBox, unlockingBox } from '../../store/box/action';
+import { enteringNumbers, lockingBox, unlockingBox, validationMaserCode } from '../../store/box/action';
 import { formatArrayToString } from '../../lib/utils';
-import { makeActivateScreen } from '../../store/common/action';
+import { clickButtonsCounter, followTheBoxActions, makeActivateScreen } from '../../store/common/action';
 
 export const BoxKeypad = () => {
   const dispatch = useDispatch();
+  let [counter, setCounter] = useState(0);
   const state = useSelector((state) => state?.box);
   const processing = state?.processing;
   const numbers = formatArrayToString(state?.numbers);
+  const isServiceMode = state?.isServiceMode;
+  const isTimeSpace = useSelector((state) => state?.common?.isTimeSpace);
   const lsIsLocked = JSON.parse(localStorage.getItem('isLocked'));
+  let referenceInterval;
+
+  useEffect(() => {
+    if (isTimeSpace) {
+      return isTimeSpace;
+    }
+  }, [isTimeSpace]);
+
+  const prevCounterRef = useRef();
+
+  useEffect(() => {
+    prevCounterRef.current = counter;
+  });
+  const prevCounter = prevCounterRef.current;
+  const interval = useRef(null);
 
   const handleEnterNumbers = (num) => {
     dispatch(makeActivateScreen('pressed'));
 
+    if (counter > 0 || counter !== prevCounter) {
+      clearInterval(referenceInterval);
+    }
+
     if (num !== 'L') {
+      setCounter((counter += 1));
+      dispatch(clickButtonsCounter(counter));
       dispatch(enteringNumbers(num));
+      dispatch(followTheBoxActions(true));
+      // handling user's delay of typing
+      // referenceInterval = setInterval(() => {
+      //   console.log('referenceInterval');
+      //   if (lsIsLocked) {
+      //     dispatch(unlockingBox(numbers));
+      //   } else {
+      //     dispatch(lockingBox(numbers));
+      //     localStorage.setItem('submited_code', numbers);
+      //   }
+      //   clearInterval(referenceInterval);
+      // }, 1200);
     }
 
     if (num === 'L') {
-      if (lsIsLocked) {
+      if (isServiceMode) {
+        dispatch(validationMaserCode(numbers));
+      } else if (lsIsLocked) {
         dispatch(unlockingBox(numbers));
       } else {
         dispatch(lockingBox(numbers));

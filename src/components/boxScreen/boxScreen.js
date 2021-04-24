@@ -12,7 +12,7 @@ export const BoxScreen = ({ isLocked, message }) => {
   const lsNumbers = localStorage.getItem('stored_code');
   const numbersString = formatArrayToString(numbers) || lsNumbers;
   let mainScreenText = 'Ready';
-  const blankMessage = message?.startsWith('blank');
+  const blankMessage = message?.startsWith('blank') && isEmpty;
   const isActiveClass = isActiveScreen || processing ? 'screen-on' : 'screen-off';
 
   useEffect(() => {
@@ -20,6 +20,12 @@ export const BoxScreen = ({ isLocked, message }) => {
       setCode(numbersString);
     }
   }, [numbersString]);
+
+  useEffect(() => {
+    if (isActiveScreen) {
+      return isActiveScreen;
+    }
+  }, [isActiveScreen]);
 
   if (!isEmpty) {
     localStorage.setItem('code_numbers', JSON.stringify(numbers));

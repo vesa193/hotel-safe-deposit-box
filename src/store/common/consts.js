@@ -1,3 +1,5 @@
 export const INIT_APP = 'INIT_APP';
 export const ACTIVATE_SCREEN = 'ACTIVATE_SCREEN';
+export const FOLLOW_ACTION = 'FOLLOW_ACTION';
+export const FOLLOW_COUNTER = 'FOLLOW_COUNTER';
 export const SET_COMMON_PROP = 'SET_COMMON_PROP';
