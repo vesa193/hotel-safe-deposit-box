@@ -6,6 +6,7 @@ import { boxKeypadData } from './boxKeypadData';
 import './boxKeypad.scss';
 import { enteringNumbers, lockingBox, unlockingBox } from '../../store/box/action';
 import { convertArrayToString, formatArrayToString } from '../../lib/utils';
+import { makeActivateScreen } from '../../store/common/action';
 
 export const BoxKeypad = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,8 @@ export const BoxKeypad = () => {
   const lsIsLocked = JSON.parse(localStorage.getItem('isLocked'));
 
   const handleEnterNumbers = (num) => {
+    dispatch(makeActivateScreen('pressed'));
+
     if (num !== 'L') {
       dispatch(enteringNumbers(num));
     }

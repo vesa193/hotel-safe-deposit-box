@@ -6,13 +6,14 @@ import './boxScreen.scss';
 export const BoxScreen = ({ isLocked, message }) => {
   const numbers = useSelector((state) => state?.box?.numbers);
   const processing = useSelector((state) => state?.box?.processing);
+  const isActiveScreen = useSelector((state) => state?.common?.isActiveScreen);
   const [code, setCode] = useState(null);
   const isEmpty = numbers.length === 0;
   const lsNumbers = localStorage.getItem('stored_code');
   const numbersString = formatArrayToString(numbers) || lsNumbers;
   let mainScreenText = 'Ready';
-  // eslint-disable-next-line no-console
-  console.log('lsNumbers', lsNumbers, numbersString);
+  const blankMessage = message?.startsWith('blank');
+  const isActiveClass = isActiveScreen || processing ? 'screen-on' : 'screen-off';
 
   useEffect(() => {
     if (numbersString) {
@@ -25,16 +26,8 @@ export const BoxScreen = ({ isLocked, message }) => {
     localStorage.setItem('stored_code', numbersString);
   }
 
-  // if (!isEmpty && screenMessage) {
-  //   mainScreenText = screenMessage;
-  // } else if (!isEmpty) {
-  //   mainScreenText = code;
-  // } else {
-  //   mainScreenText = 'Ready';
-  // }
-
   if (!processing && isEmpty && !message) {
-    mainScreenText = isLocked ? 'Closed' : 'Ready';
+    mainScreenText = isLocked ? message : 'Ready';
   } else if (processing) {
     mainScreenText = message;
   } else if (!processing) {
@@ -44,17 +37,11 @@ export const BoxScreen = ({ isLocked, message }) => {
       mainScreenText = code;
     }
   }
-  // else {
-  //   mainScreenText = 'blank (no value)';
-  // }
-
-  // eslint-disable-next-line no-console
-  console.log('code', code, isEmpty);
 
   return (
-    <div className="box-screen screen-on">
+    <div className={`box-screen ${isActiveClass}`}>
       <p>{!isLocked ? 'Unlocked' : 'Locked'}</p>
-      <h4>{mainScreenText}</h4>
+      <h4 className={blankMessage ? 'smaller-text' : ''}>{mainScreenText}</h4>
     </div>
   );
 };

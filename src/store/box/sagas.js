@@ -21,22 +21,23 @@ import { REPEAT_TO_UNLOCK, SET_BOX_PROP, SUBMIT_CODE } from './consts';
 // Locking the deposit box flow
 function* submitCodeFlow(action) {
   try {
-    const lsCode = yield localStorage.getItem('stored_code');
     const submitedCode = yield action?.submitedCode;
-    // eslint-disable-next-line no-console
-    console.log('lsCode', lsCode, submitedCode);
-    yield put({ type: SET_BOX_PROP, key: 'processing', value: true });
-    yield put({ type: SET_BOX_PROP, key: 'message', value: 'Locking...' });
-    yield delay(3000);
-    yield put({ type: SET_BOX_PROP, key: 'isLockedBox', value: true });
-    yield localStorage.setItem('isLocked', 'true');
-    yield localStorage.removeItem('code_numbers');
-    yield localStorage.removeItem('stored_code');
-    yield put({ type: SET_BOX_PROP, key: 'numbers', value: [] });
-    yield put({ type: SET_BOX_PROP, key: 'message', value: 'Closed' });
-    yield delay(1500);
-    yield put({ type: SET_BOX_PROP, key: 'message', value: '' });
-    yield put({ type: SET_BOX_PROP, key: 'processing', value: false });
+    if (!submitedCode) {
+      yield put({ type: SET_BOX_PROP, key: 'message', value: 'blank (no value)' });
+    } else {
+      yield put({ type: SET_BOX_PROP, key: 'processing', value: true });
+      yield put({ type: SET_BOX_PROP, key: 'message', value: 'Locking...' });
+      yield delay(3000);
+      yield put({ type: SET_BOX_PROP, key: 'isLockedBox', value: true });
+      yield localStorage.setItem('isLocked', 'true');
+      yield localStorage.removeItem('code_numbers');
+      yield localStorage.removeItem('stored_code');
+      yield put({ type: SET_BOX_PROP, key: 'numbers', value: [] });
+      yield put({ type: SET_BOX_PROP, key: 'message', value: 'Closed' });
+      yield delay(1500);
+      yield put({ type: SET_BOX_PROP, key: 'message', value: '' });
+      yield put({ type: SET_BOX_PROP, key: 'processing', value: false });
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('error', error);
@@ -48,9 +49,9 @@ function* unlockinBoxFLow(action) {
   try {
     const lsSubmitedCode = yield localStorage.getItem('submited_code');
     const submitedCode = yield action?.code;
-    // eslint-disable-next-line no-console
-    yield console.log('lsCode', lsSubmitedCode, submitedCode);
-    if (lsSubmitedCode === submitedCode) {
+    if (!submitedCode) {
+      yield put({ type: SET_BOX_PROP, key: 'message', value: 'blank (no value)' });
+    } else if (lsSubmitedCode === submitedCode) {
       yield put({ type: SET_BOX_PROP, key: 'processing', value: true });
       yield put({ type: SET_BOX_PROP, key: 'message', value: 'Unlocking...' });
       yield delay(3000);
