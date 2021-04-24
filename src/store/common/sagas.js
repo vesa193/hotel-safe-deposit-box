@@ -1,7 +1,6 @@
 // import { put, call, takeEvery } from 'redux-saga/effects'
 
 import { put, takeEvery, delay } from 'redux-saga/effects';
-import { SET_BOX_PROP } from '../box/consts';
 import { ACTIVATE_SCREEN, SET_COMMON_PROP } from './consts';
 
 // example of saga code

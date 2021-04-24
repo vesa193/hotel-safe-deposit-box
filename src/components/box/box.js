@@ -10,9 +10,6 @@ export const Box = ({ serialNumber }) => {
   const lsIsLocked = localStorage.getItem('isLocked');
   const isLocked = state?.isLockedBox || JSON.parse(lsIsLocked);
 
-  // eslint-disable-next-line no-console
-  console.log('infoo', message, isLocked);
-
   return (
     <div className="box">
       <BoxScreen isLocked={isLocked} message={message} />

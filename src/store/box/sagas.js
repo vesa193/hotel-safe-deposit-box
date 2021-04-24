@@ -1,4 +1,4 @@
-import { put, call, takeEvery, delay } from 'redux-saga/effects';
+import { put, takeEvery, delay } from 'redux-saga/effects';
 import { REPEAT_TO_UNLOCK, SET_BOX_PROP, SUBMIT_CODE } from './consts';
 
 // example of saga code

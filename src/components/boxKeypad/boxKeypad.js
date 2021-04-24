@@ -5,7 +5,7 @@ import { BoxKeypadButton } from '../boxKeypadButton/boxKeypadButton';
 import { boxKeypadData } from './boxKeypadData';
 import './boxKeypad.scss';
 import { enteringNumbers, lockingBox, unlockingBox } from '../../store/box/action';
-import { convertArrayToString, formatArrayToString } from '../../lib/utils';
+import { formatArrayToString } from '../../lib/utils';
 import { makeActivateScreen } from '../../store/common/action';
 
 export const BoxKeypad = () => {
