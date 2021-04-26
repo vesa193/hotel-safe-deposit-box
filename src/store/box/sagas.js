@@ -55,7 +55,7 @@ function* unlockinBoxFLow(action) {
   try {
     const lsSubmitedCode = yield localStorage.getItem('submited_code').replace(/L/g, '');
     const submitedCode = yield action?.code.replace(/L/g, '');
-    if (!submitedCode) {
+    if (!submitedCode || submitedCode === 'L') {
       yield put({ type: SET_BOX_PROP, key: 'message', value: 'blank (no value)' });
     } else if (lsSubmitedCode === submitedCode) {
       yield put({ type: SET_BOX_PROP, key: 'processing', value: true });
