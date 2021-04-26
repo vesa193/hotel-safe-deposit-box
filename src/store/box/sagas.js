@@ -2,27 +2,11 @@ import { put, takeEvery, delay, call } from 'redux-saga/effects';
 import { endpoint } from '../../lib/api';
 import { REPEAT_TO_UNLOCK, SET_BOX_PROP, SUBMIT_CODE, VALIDATE_MASTER_CODE } from './consts';
 
-// example of saga code
-
-// function* initSaga() {
-//   yield put({ type: IS_LOADER_ACTIVE, isLoading: true })
-//   try {
-//     const resProfile = yield call(getUserData)
-//     const res = yield call(getBoardsData)
-//     const data = yield res?.data
-//     yield put({ type: GET_BOARDS_SUCCESS, boards: data })
-//     yield put({ type: SET_PROFILE_PROP, key: 'profile', value: resProfile?.data })
-//     yield put({ type: IS_LOADER_ACTIVE, isLoading: false })
-//   } catch (error) {
-//       yield put({ type: GET_BOARDS_FAILED, boardsError: error })
-//       yield put({ type: IS_LOADER_ACTIVE, isLoading: false })
-//   }
-// }
-
 // Locking the deposit box flow
 function* submitCodeFlow(action) {
   try {
     const submitedCode = yield action?.submitedCode;
+    const lsIsLocked = yield JSON.parse(localStorage.getItem('isLocked'));
     if (!submitedCode || submitedCode === 'L') {
       yield put({ type: SET_BOX_PROP, key: 'message', value: 'blank (no value)' });
     } else if (submitedCode.length < 6) {
@@ -31,7 +15,11 @@ function* submitCodeFlow(action) {
       yield delay(3000);
       yield put({ type: SET_BOX_PROP, key: 'message', value: 'Error' });
       yield delay(1500);
-      yield put({ type: SET_BOX_PROP, key: 'message', value: 'Closed' });
+      if (!lsIsLocked) {
+        yield put({ type: SET_BOX_PROP, key: 'message', value: 'Opened' });
+      } else {
+        yield put({ type: SET_BOX_PROP, key: 'message', value: 'Closed' });
+      }
       yield delay(1500);
       yield put({ type: SET_BOX_PROP, key: 'message', value: '' });
       yield put({ type: SET_BOX_PROP, key: 'processing', value: false });
@@ -47,7 +35,11 @@ function* submitCodeFlow(action) {
       yield localStorage.removeItem('code_numbers');
       yield localStorage.removeItem('stored_code');
       yield put({ type: SET_BOX_PROP, key: 'numbers', value: [] });
-      yield put({ type: SET_BOX_PROP, key: 'message', value: 'Closed' });
+      if (lsIsLocked) {
+        yield put({ type: SET_BOX_PROP, key: 'message', value: 'Opened' });
+      } else {
+        yield put({ type: SET_BOX_PROP, key: 'message', value: 'Closed' });
+      }
       yield delay(1500);
       yield put({ type: SET_BOX_PROP, key: 'message', value: '' });
       yield put({ type: SET_BOX_PROP, key: 'processing', value: false });
@@ -63,8 +55,6 @@ function* unlockinBoxFLow(action) {
   try {
     const lsSubmitedCode = yield localStorage.getItem('submited_code').replace(/L/g, '');
     const submitedCode = yield action?.code.replace(/L/g, '');
-    // eslint-disable-next-line no-console
-    console.log('unlockingflow', lsSubmitedCode, submitedCode, lsSubmitedCode === submitedCode);
     if (!submitedCode) {
       yield put({ type: SET_BOX_PROP, key: 'message', value: 'blank (no value)' });
     } else if (lsSubmitedCode === submitedCode) {
