@@ -5,7 +5,7 @@ import { BoxKeypadButton } from '../boxKeypadButton/boxKeypadButton';
 import { boxKeypadData } from './boxKeypadData';
 import './boxKeypad.scss';
 import { enteringNumbers, lockingBox, unlockingBox, validationMaserCode } from '../../store/box/action';
-import { formatArrayToString } from '../../lib/utils';
+import { convertArrayToString, formatArrayToString } from '../../lib/utils';
 import { clickButtonsCounter, followTheBoxActions, makeActivateScreen } from '../../store/common/action';
 
 export const BoxKeypad = () => {
@@ -37,35 +37,35 @@ export const BoxKeypad = () => {
     dispatch(makeActivateScreen('pressed'));
 
     if (counter > 0 || counter !== prevCounter) {
-      clearInterval(referenceInterval);
+      clearInterval(interval.current);
     }
-
+    const newNumbers = formatArrayToString([...numbers, num]);
     if (num !== 'L') {
       setCounter((counter += 1));
       dispatch(clickButtonsCounter(counter));
       dispatch(enteringNumbers(num));
       dispatch(followTheBoxActions(true));
       // handling user's delay of typing
-      // referenceInterval = setInterval(() => {
-      //   console.log('referenceInterval');
-      //   if (lsIsLocked) {
-      //     dispatch(unlockingBox(numbers));
-      //   } else {
-      //     dispatch(lockingBox(numbers));
-      //     localStorage.setItem('submited_code', numbers);
-      //   }
-      //   clearInterval(referenceInterval);
-      // }, 1200);
+      interval.current = setInterval(() => {
+        console.log('interval.current');
+        if (lsIsLocked) {
+          dispatch(unlockingBox(newNumbers.replace(/L/g, '')));
+        } else {
+          dispatch(lockingBox(newNumbers.replace(/L/g, '')));
+          localStorage.setItem('submited_code', newNumbers.replace(/L/g, ''));
+        }
+        clearInterval(interval.current);
+      }, 1200);
     }
 
     if (num === 'L') {
       if (isServiceMode) {
-        dispatch(validationMaserCode(numbers));
+        dispatch(validationMaserCode(newNumbers));
       } else if (lsIsLocked) {
-        dispatch(unlockingBox(numbers));
+        dispatch(unlockingBox(newNumbers));
       } else {
-        dispatch(lockingBox(numbers));
-        localStorage.setItem('submited_code', numbers);
+        dispatch(lockingBox(newNumbers));
+        localStorage.setItem('submited_code', newNumbers);
       }
     }
   };

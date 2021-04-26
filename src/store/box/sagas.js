@@ -48,8 +48,10 @@ function* submitCodeFlow(action) {
 // UnLocking the deposit box flow
 function* unlockinBoxFLow(action) {
   try {
-    const lsSubmitedCode = yield localStorage.getItem('submited_code');
-    const submitedCode = yield action?.code;
+    const lsSubmitedCode = yield localStorage.getItem('submited_code').replace(/L/g, '');
+    const submitedCode = yield action?.code.replace(/L/g, '');
+    // eslint-disable-next-line no-console
+    console.log('unlockingflow', lsSubmitedCode, submitedCode, lsSubmitedCode === submitedCode);
     if (!submitedCode) {
       yield put({ type: SET_BOX_PROP, key: 'message', value: 'blank (no value)' });
     } else if (lsSubmitedCode === submitedCode) {
