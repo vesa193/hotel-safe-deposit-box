@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/hotel-safe-deposit-box/static/css/main.c4cefcfa.chunk.css",
-    "main.js": "/hotel-safe-deposit-box/static/js/main.ed6560ca.chunk.js",
-    "main.js.map": "/hotel-safe-deposit-box/static/js/main.ed6560ca.chunk.js.map",
+    "main.js": "/hotel-safe-deposit-box/static/js/main.977d709c.chunk.js",
+    "main.js.map": "/hotel-safe-deposit-box/static/js/main.977d709c.chunk.js.map",
     "runtime-main.js": "/hotel-safe-deposit-box/static/js/runtime-main.e950d553.js",
     "runtime-main.js.map": "/hotel-safe-deposit-box/static/js/runtime-main.e950d553.js.map",
     "static/js/2.c2e110ac.chunk.js": "/hotel-safe-deposit-box/static/js/2.c2e110ac.chunk.js",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.e950d553.js",
     "static/js/2.c2e110ac.chunk.js",
     "static/css/main.c4cefcfa.chunk.css",
-    "static/js/main.ed6560ca.chunk.js"
+    "static/js/main.977d709c.chunk.js"
   ]
 }
