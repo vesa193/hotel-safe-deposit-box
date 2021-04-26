@@ -1,5 +1,5 @@
 import { put, takeEvery, delay, call } from 'redux-saga/effects';
-import { endpoint, validationMasterCode } from '../../lib/api';
+import { endpoint } from '../../lib/api';
 import { REPEAT_TO_UNLOCK, SET_BOX_PROP, SUBMIT_CODE, VALIDATE_MASTER_CODE } from './consts';
 
 // example of saga code

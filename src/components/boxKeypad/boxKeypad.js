@@ -5,7 +5,7 @@ import { BoxKeypadButton } from '../boxKeypadButton/boxKeypadButton';
 import { boxKeypadData } from './boxKeypadData';
 import './boxKeypad.scss';
 import { enteringNumbers, lockingBox, unlockingBox, validationMaserCode } from '../../store/box/action';
-import { convertArrayToString, formatArrayToString } from '../../lib/utils';
+import { formatArrayToString } from '../../lib/utils';
 import { clickButtonsCounter, followTheBoxActions, makeActivateScreen } from '../../store/common/action';
 
 export const BoxKeypad = () => {
@@ -17,7 +17,6 @@ export const BoxKeypad = () => {
   const isServiceMode = state?.isServiceMode;
   const isTimeSpace = useSelector((state) => state?.common?.isTimeSpace);
   const lsIsLocked = JSON.parse(localStorage.getItem('isLocked'));
-  let referenceInterval;
 
   useEffect(() => {
     if (isTimeSpace) {
@@ -47,7 +46,6 @@ export const BoxKeypad = () => {
       dispatch(followTheBoxActions(true));
       // handling user's delay of typing
       interval.current = setInterval(() => {
-        console.log('interval.current');
         if (lsIsLocked) {
           dispatch(unlockingBox(newNumbers.replace(/L/g, '')));
         } else {
