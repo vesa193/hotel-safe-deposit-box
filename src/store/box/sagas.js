@@ -23,7 +23,7 @@ import { REPEAT_TO_UNLOCK, SET_BOX_PROP, SUBMIT_CODE, VALIDATE_MASTER_CODE } fro
 function* submitCodeFlow(action) {
   try {
     const submitedCode = yield action?.submitedCode;
-    if (!submitedCode) {
+    if (!submitedCode || submitedCode === 'L') {
       yield put({ type: SET_BOX_PROP, key: 'message', value: 'blank (no value)' });
     } else if (submitedCode.length < 6) {
       yield put({ type: SET_BOX_PROP, key: 'processing', value: true });
