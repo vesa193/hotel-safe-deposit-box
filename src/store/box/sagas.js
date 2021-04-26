@@ -25,6 +25,19 @@ function* submitCodeFlow(action) {
     const submitedCode = yield action?.submitedCode;
     if (!submitedCode) {
       yield put({ type: SET_BOX_PROP, key: 'message', value: 'blank (no value)' });
+    } else if (submitedCode.length < 6) {
+      yield put({ type: SET_BOX_PROP, key: 'processing', value: true });
+      yield put({ type: SET_BOX_PROP, key: 'message', value: 'Locking...' });
+      yield delay(3000);
+      yield put({ type: SET_BOX_PROP, key: 'message', value: 'Error' });
+      yield delay(1500);
+      yield put({ type: SET_BOX_PROP, key: 'message', value: 'Closed' });
+      yield delay(1500);
+      yield put({ type: SET_BOX_PROP, key: 'message', value: '' });
+      yield put({ type: SET_BOX_PROP, key: 'processing', value: false });
+      yield put({ type: SET_BOX_PROP, key: 'numbers', value: [] });
+      yield localStorage.removeItem('code_numbers');
+      yield localStorage.removeItem('stored_code');
     } else {
       yield put({ type: SET_BOX_PROP, key: 'processing', value: true });
       yield put({ type: SET_BOX_PROP, key: 'message', value: 'Locking...' });
